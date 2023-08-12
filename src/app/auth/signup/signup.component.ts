@@ -5,6 +5,7 @@ import {
   Validators,
   ValidatorFn,
   AsyncValidatorFn,
+  AbstractControl,
 } from '@angular/forms';
 import { ValidatePassword } from '../validators/validate-password';
 import { ValidateUsername } from '../validators/validate-username';
@@ -47,4 +48,9 @@ export class SignupComponent implements OnInit {
   );
 
   ngOnInit(): void {}
+
+  convertToFormControl(absCtrl: AbstractControl | null): FormControl {
+    const ctrl = absCtrl as FormControl;
+    return ctrl;
+  }
 }

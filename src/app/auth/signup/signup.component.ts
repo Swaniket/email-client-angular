@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { ValidatePassword } from '../validators/validate-password';
 import { ValidateUsername } from '../validators/validate-username';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +19,8 @@ import { ValidateUsername } from '../validators/validate-username';
 export class SignupComponent implements OnInit {
   constructor(
     private validatePassword: ValidatePassword,
-    private validateUsername: ValidateUsername
+    private validateUsername: ValidateUsername,
+    private authService: AuthService
   ) {}
 
   authForm = new FormGroup(
@@ -52,5 +54,25 @@ export class SignupComponent implements OnInit {
   convertToFormControl(absCtrl: AbstractControl | null): FormControl {
     const ctrl = absCtrl as FormControl;
     return ctrl;
+  }
+
+  onSubmit() {
+    // @TODO: Show notification if can't submit
+    if (this.authForm.invalid) return;
+
+    const submitValue = this.authForm.value;
+    this.authService.signUp(submitValue).subscribe({
+      next: (response) => {
+        // @TODO: Navigate to some other route
+        // @TODO: Show notification
+      },
+      error: (err) => {
+        if (err.status === 0) {
+          this.authForm.setErrors({ noConnection: true });
+        } else {
+          this.authForm.setErrors({ unknownError: true });
+        }
+      },
+    });
   }
 }

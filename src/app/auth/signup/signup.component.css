@@ -5,3 +5,14 @@
 button {
   margin-bottom: 0.5em;
 }
+
+.formCard {
+  padding: 1%;
+  width: 450px;
+}
+
+.card-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,37 +1,56 @@
-<h3>Create an Account</h3>
-<form [formGroup]="authForm" class="ui form">
-  <app-input
-    label="Username"
-    inputType="text"
-    [control]="convertToFormControl(authForm.get('username'))"
-  ></app-input>
+<div class="card-wrapper pushable">
+  <div class="ui card formCard">
+    <div class="content">
+      <div class="header">Create an Account</div>
+    </div>
+    <!-- <h3>Create an Account</h3> -->
 
-  <app-input
-    label="Password"
-    inputType="password"
-    [control]="convertToFormControl(authForm.get('password'))"
-  ></app-input>
+    <div class="content">
+      <form [formGroup]="authForm" class="ui form" (ngSubmit)="onSubmit()">
+        <app-input
+          label="Username"
+          inputType="text"
+          [control]="convertToFormControl(authForm.get('username'))"
+        ></app-input>
 
-  <app-input
-    label="Confirm Password"
-    inputType="password"
-    [control]="convertToFormControl(authForm.get('passwordConfirmation'))"
-  ></app-input>
+        <app-input
+          label="Password"
+          inputType="password"
+          [control]="convertToFormControl(authForm.get('password'))"
+        ></app-input>
 
-  <div
-    class="ui red basic label"
-    *ngIf="
-      authForm.get('password')?.touched &&
-      authForm.get('passwordConfirmation')?.touched &&
-      authForm.errors
-    "
-  >
-    <p *ngIf="authForm.errors?.['passwordsDontMatch']">
-      Password and Confirm Password must match
-    </p>
+        <app-input
+          label="Confirm Password"
+          inputType="password"
+          [control]="convertToFormControl(authForm.get('passwordConfirmation'))"
+        ></app-input>
+
+        <!-- Errors -->
+        <div
+          class="ui red basic label"
+          *ngIf="
+            authForm.get('password')?.touched &&
+            authForm.get('passwordConfirmation')?.touched &&
+            authForm.errors
+          "
+        >
+          <p *ngIf="authForm.errors?.['passwordsDontMatch']">
+            Password and Confirm Password must match
+          </p>
+          <p *ngIf="authForm.errors?.['noConnection']">
+            No internet connection, please try again later
+          </p>
+          <p *ngIf="authForm.errors?.['unknownError']">
+            Something went wrong, please try again later
+          </p>
+        </div>
+
+        <!-- Buttons -->
+        <div>
+          <button class="ui submit button secondary">Submit</button>
+          <button class="ui button">Clear</button>
+        </div>
+      </form>
+    </div>
   </div>
-
-  <div>
-    <button class="ui submit button secondary">Submit</button>
-  </div>
-</form>
+</div>

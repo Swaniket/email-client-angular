@@ -16,10 +16,16 @@ interface ISignupResponse {
   username: string;
 }
 
+interface IIsSignedInResponse {
+  authenticated: boolean;
+  username: string | null;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  // withCredentials: true is required to presist the cookie, by default, angular discards the cookies
   rootURL = 'https://api.angular-email.com';
   isSignedIn = new BehaviorSubject(false);
 
@@ -40,6 +46,16 @@ export class AuthService {
       .pipe(
         tap(() => {
           this.isSignedIn.next(true);
+        })
+      );
+  }
+
+  checkAuthStatus() {
+    return this.http
+      .get<IIsSignedInResponse>(`${this.rootURL}/auth/signedin`)
+      .pipe(
+        tap(({ authenticated }) => {
+          this.isSignedIn.next(authenticated);
         })
       );
   }

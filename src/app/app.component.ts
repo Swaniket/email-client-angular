@@ -9,11 +9,13 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent implements OnInit {
   signedIn = false;
 
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
+  constructor(private authService: AuthService) {
     this.authService.isSignedIn.subscribe((signedIn) => {
       this.signedIn = signedIn;
     });
+  }
+
+  ngOnInit(): void {
+    this.authService.checkAuthStatus().subscribe(() => {});
   }
 }

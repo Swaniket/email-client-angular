@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, tap } from 'rxjs';
 
 interface IUsernameAvailabeResponse {
   available: boolean;
@@ -21,6 +21,7 @@ interface ISignupResponse {
 })
 export class AuthService {
   rootURL = 'https://api.angular-email.com';
+  isSignedIn = new BehaviorSubject(false);
 
   constructor(private http: HttpClient) {}
 
@@ -34,9 +35,12 @@ export class AuthService {
   }
 
   signUp(credentials: ISignupCredentials): Observable<ISignupResponse> {
-    return this.http.post<ISignupResponse>(
-      `${this.rootURL}/auth/signup`,
-      credentials
-    );
+    return this.http
+      .post<ISignupResponse>(`${this.rootURL}/auth/signup`, credentials)
+      .pipe(
+        tap(() => {
+          this.isSignedIn.next(true);
+        })
+      );
   }
 }

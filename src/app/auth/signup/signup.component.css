@@ -16,3 +16,13 @@ button {
   justify-content: center;
   align-items: center;
 }
+
+.card-switch {
+  padding: 3%
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end !important;
+  padding: 2%;
+}

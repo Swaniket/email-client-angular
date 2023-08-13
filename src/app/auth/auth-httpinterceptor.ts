@@ -14,6 +14,7 @@ export class AuthHTTPInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    // withCredentials: true is required to presist the cookie, by default, angular discards the cookies
     const modifiedReq = req.clone({
       withCredentials: true,
     });

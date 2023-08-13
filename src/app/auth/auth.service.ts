@@ -21,11 +21,15 @@ interface IIsSignedInResponse {
   username: string | null;
 }
 
+interface ILoginCredentails {
+  username: string;
+  password: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  // withCredentials: true is required to presist the cookie, by default, angular discards the cookies
   rootURL = 'https://api.angular-email.com';
   isSignedIn = new BehaviorSubject(false);
 
@@ -58,5 +62,21 @@ export class AuthService {
           this.isSignedIn.next(authenticated);
         })
       );
+  }
+
+  signOut() {
+    return this.http.post<{}>(`${this.rootURL}/auth/signout`, {}).pipe(
+      tap(() => {
+        this.isSignedIn.next(false);
+      })
+    );
+  }
+
+  signIn(credentials: ILoginCredentails) {
+    return this.http.post(`${this.rootURL}/auth/signin`, credentials).pipe(
+      tap(() => {
+        this.isSignedIn.next(true);
+      })
+    );
   }
 }

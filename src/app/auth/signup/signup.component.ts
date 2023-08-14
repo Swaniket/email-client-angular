@@ -7,6 +7,7 @@ import {
   AsyncValidatorFn,
   AbstractControl,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ValidatePassword } from '../validators/validate-password';
 import { ValidateUsername } from '../validators/validate-username';
 import { AuthService } from '../auth.service';
@@ -20,7 +21,8 @@ export class SignupComponent implements OnInit {
   constructor(
     private validatePassword: ValidatePassword,
     private validateUsername: ValidateUsername,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   authForm = new FormGroup(
@@ -63,8 +65,8 @@ export class SignupComponent implements OnInit {
     const submitValue = this.authForm.value;
     this.authService.signUp(submitValue).subscribe({
       next: (response) => {
-        // @TODO: Navigate to some other route
         // @TODO: Show notification
+        this.router.navigateByUrl('/inbox');
       },
       error: (err) => {
         if (err.status === 0) {

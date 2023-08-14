@@ -5,6 +5,7 @@ import {
   Validators,
   AbstractControl,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -13,7 +14,7 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./signin.component.css'],
 })
 export class SigninComponent implements OnInit {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   authForm = new FormGroup({
     username: new FormControl('', [
@@ -40,7 +41,10 @@ export class SigninComponent implements OnInit {
     if (this.authForm.invalid) return;
 
     this.authService.signIn(this.authForm.value).subscribe({
-      next: (response) => {},
+      next: (response) => {
+        // @TODO: Show notification for successfull login
+        this.router.navigateByUrl('/inbox');
+      },
       error: ({ error }) => {
         if (error.password || error.password) {
           this.authForm.setErrors({ invalidCredentials: true });
